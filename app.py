@@ -18,11 +18,16 @@ st.caption("UAdeO • Materia: Sistemas Inteligentes • Dra. Aiblis Susej Herre
 # 2. GESTIÓN SEGURA DE LA API KEY (LOCAL Y STREAMLIT CLOUD)
 # ==============================================================================
 try:
-    # Intenta leer la clave desde los secretos de Streamlit Cloud
-    api_key = st.secrets["GEMINI_API_KEY"]
+    api_key = st.secrets["GEMINI_API_KEY"].strip()
 except Exception:
-    # ⚠️ REEMPLAZA ESTA CADENA POR TU CLAVE REAL DE GOOGLE AI STUDIO PARA PRUEBAS LOCALES
-    api_key = "GEMINI_API_KEY"
+    st.error("No se pudo leer GEMINI_API_KEY en Secrets de esta aplicación.")
+    st.stop()
+
+if api_key in ("", "GEMINI_API_KEY", "TU_CLAVE_REAL"):
+    st.error("Secrets contiene un texto de ejemplo, no una clave real.")
+    st.stop()
+
+st.success("La clave se leyó desde Secrets.")
 
 # ==============================================================================
 # 3. CONFIGURACIÓN DE PERSONALIDAD DEL BOT
